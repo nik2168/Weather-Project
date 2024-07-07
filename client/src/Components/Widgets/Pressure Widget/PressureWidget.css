@@ -1,0 +1,21 @@
+.pressureWidget {
+  min-width: 11rem;
+  width: 16rem;
+  max-width: 12rem;
+  height: 100%;
+  border-radius: 25px;
+  padding: 1rem;
+  background-image: url("../../../assets/images/sunset.jpg");
+  background-size: cover;
+  background-color: rgba(34, 29, 29, 0.4);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(16px);
+  overflow: hidden;
+  display: flex;
+  text-shadow: 1px 1px 1px #333;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  color: white;
+  /* filter: drop-shadow(0 0 20px rgba(252, 252, 252, 0.8)); */
+}

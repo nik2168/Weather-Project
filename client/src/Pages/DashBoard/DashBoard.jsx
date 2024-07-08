@@ -1,53 +1,62 @@
-import React, { useEffect, useState } from "react";
-import WeatherWidget from "../../Components/WeatherWidget/WeatherWidget";
-import "./DashBoard.css";
-import { Container, Paper, Skeleton, Stack, Typography, styled } from "@mui/material";
+import { Box, Container, Skeleton, Stack, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import AppLayout from "../../Components/AppLayout/AppLayout";
 import DashBoardBackground from "../../Components/DashBoardBackground/DashBoardBackground";
 import Widgets from "../../Components/Widgets/Widgets";
-import AppLayout from "../../Components/AppLayout/AppLayout";
-import { useParams } from "react-router-dom";
+import { useErrors } from "../../Features/hooks";
+import { useCurWeatherQuery, useLazyAddRemoveCitiesQuery } from "../../redux/api/api";
+import { ArrowBackIosNew } from "@mui/icons-material";
+import "./DashBoard.css";
+import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import axios from "axios";
-
-
+import { userExists } from "../../redux/reducer/authslice";
 
 const DashBoard = () => {
-  const [curData, setData] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
+  const { user } = useSelector((state) => state.auth);
 
+  const dispatch = useDispatch()
 
-    const baseUrl = "https://api.openweathermap.org/data/2.5/weather";
-
+  const navigate = useNavigate();
 
   const { city } = useParams();
 
-  useEffect(() => {
-    const toastId = toast.loading("Fetching Data...");
 
-    setIsLoading(true);
 
-    axios
-      .get(`${baseUrl}?q=${city}&appid=6cfb46eca0d4f9bd7c6518971820b06f`)
-      .then(({ data }) => {
-        setData(data);
-        console.log(data)
-        toast.success(data?.message || "success !", { id: toastId });
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        toast.error(err?.response?.data?.message || "Something went wrong", {
-          id: toastId,
-        });
-                setIsLoading(false);
-      });
-  }, [city]);
 
-  if(!curData) return null;
+  const { isLoading, isError, error, data, refetch } = useCurWeatherQuery(city);
 
-  let curWeather = curData?.weather
-  let weather = ""
-  if(curWeather){
-   weather = curWeather[0]?.main
+  useErrors([{ isError, error }]);
+
+  let buttonType = "";
+  if (user?.cities?.includes(city.toString().toLocaleLowerCase())) {
+    buttonType = "Remove";
+  } else {
+    buttonType = "Add";
+  }
+
+  let curWeather = data?.weather;
+  let weather = "";
+  if (curWeather) {
+    weather = curWeather[0]?.main;
+  }
+
+    const [useAddRemoveCities] = useLazyAddRemoveCitiesQuery();
+
+
+    
+
+  const citiesHandler = async (e)  => {
+    console.log(`city ${e.currentTarget.value}`)
+ try {
+      const res = await useAddRemoveCities(city);
+      if (res?.data?.success) toast.success(res?.data?.message);
+      else toast.error(res?.error?.message);
+    } catch (err) {
+      toast.error(err?.response?.data?.message || "Something went wrong");
+    } finally {
+
+    }
   }
 
   return isLoading ? (
@@ -56,8 +65,17 @@ const DashBoard = () => {
     <>
       <div className="dashboard">
         <DashBoardBackground />
-
-        <Container sx={{ height: "40%", width: "100%" }}>
+        <Box sx={{ height: "5rem", width: "100%" }} className="dashboardHeader">
+          <ArrowBackIosNew
+            sx={{ fontSize: "2.3rem" }}
+            className="ArrowBackIos"
+            onClick={() => navigate("/")}
+          />
+          <button onClick={(e) => citiesHandler(e)} value={buttonType}>
+            {buttonType}
+          </button>
+        </Box>
+        <Container sx={{ height: "40%", width: "100%", paddingTop: "3rem" }}>
           <Stack
             width={"100%"}
             sx={{
@@ -65,7 +83,6 @@ const DashBoard = () => {
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              paddingTop: "3rem",
             }}
           >
             <Typography
@@ -73,29 +90,29 @@ const DashBoard = () => {
               textAlign={"center"}
               sx={{ fontWeight: "300", fontSize: "2.3rem" }}
             >
-              {curData?.name}
+              {data?.name}
             </Typography>
             <Typography
               variant="h2"
               textAlign={"center"}
               sx={{ fontSize: "7rem" }}
             >
-              {Math.trunc(curData?.main?.temp - 273.15)}°
+              {Math.trunc(data?.main?.temp - 273.15)}°
             </Typography>
             <Typography
               textAlign={"center"}
               sx={{ color: "lightgrey", fontSize: "1rem", fontWeight: "700" }}
             >
-              {/* {curData?.weather[0]?.main} */}
+              {/* {data?.weather[0]?.main} */}
               {weather}
             </Typography>
             <Typography textAlign={"center"} sx={{ fontWeight: "400" }}>
-              H:{Math.trunc(curData?.main?.temp_max - 273.15)}° &nbsp;&nbsp; L:
-              {Math.trunc(curData?.main?.temp_min - 273.15)}°
+              H:{Math.trunc(data?.main?.temp_max - 273.15)}° &nbsp;&nbsp; L:
+              {Math.trunc(data?.main?.temp_min - 273.15)}°
             </Typography>
           </Stack>
         </Container>
-        <Widgets curData={curData} />
+        <Widgets curData={data} />
       </div>
     </>
   );

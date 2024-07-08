@@ -10,9 +10,8 @@ import AppLayout from "../../Components/AppLayout/AppLayout";
 const DefaultDashBoard = () => {
   return (
     <>
-      <div className="dashboard">
+      <div className="defaultDashboard">
         <DashBoardBackground />
-        
       </div>
     </>
   );

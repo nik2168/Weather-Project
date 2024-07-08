@@ -1,52 +1,47 @@
-import React, { useState } from "react";
-import WeatherWidget from "../../Components/WeatherWidget/WeatherWidget";
-import "./home.css";
-import axios from 'axios'
-import {
-  Container,
-  Paper,
-  Stack,
-  Typography,
-  styled,
-  Input,
-  Box,
-} from "@mui/material";
 import { Search } from "@mui/icons-material";
+import { Box, Stack, Typography } from "@mui/material";
+import axios from "axios";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
 import HomeCities from "../../Components/Cities/HomeCities";
-import toast from "react-hot-toast"
+import "./home.css";
+import { server } from "../../Features/config";
+import { userNotExists } from "../../redux/reducer/authslice";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [search, setSearch] = useState("");
   const [curData, setData] = useState({});
-  const [loading, setIsLoading] = useState(false)
+  const [loading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  const { user } = useSelector((state) => state.auth);
+
   const baseUrl = "https://api.openweathermap.org/data/2.5/weather";
-  //https://api.openweathermap.org/data/2.5/weather?q=delhi&appid=6cfb46eca0d4f9bd7c6518971820b06f
 
   const GetCityWeatherData = async (e) => {
     e.preventDefault();
-
-    if(!search.length) return;
-
-    const toastId = toast.loading("Fetching Data...");
-
-    setIsLoading(true);
-
-    try {
-      const { data } = await axios.get(
-        `${baseUrl}?q=${search}&appid=6cfb46eca0d4f9bd7c6518971820b06f`
-      );
-      setData(data)
-      toast.success(data?.message || "success !", { id: toastId });
-    } catch (err) {
-      toast.error(err?.response?.data?.message || "Something went wrong", {
-        id: toastId,
-      });
-    } finally {
-      setIsLoading(false);
-    }
-    setSearch('')
+    navigate(`/dashboard/${search}`);
+    setSearch("");
   };
 
+  const userWatchlist = user?.cities;
+
+  const logoutHandler = async (e) => {
+    try {
+      const { data } = await axios.get(`${server}/api/v1/user/logout`, {
+        withCredentials: true,
+      });
+      toast.success(data?.message);
+      dispatch(userNotExists());
+    } catch (err) {
+      toast.error(err?.response?.data?.message || "something went wrong !");
+    }
+  };
 
   return (
     <div className="home">
@@ -55,7 +50,7 @@ const Home = () => {
           Weather
         </Typography>
         <div className="buttonDiv">
-          <button>Logout</button>
+          <button onClick={(e) => logoutHandler(e)}>Logout</button>
         </div>
       </Box>
 
@@ -71,10 +66,12 @@ const Home = () => {
           onChange={(e) => setSearch(e.currentTarget.value)}
         ></input>
       </form>
-      <div className="homeCitiesBox">
-        <HomeCities />
-        <HomeCities />
-      </div>
+      <ul className="homeCitiesBox">
+      {  userWatchlist.map((curCity, idx) => {
+        return <HomeCities key={curCity} idx={idx} curCity={curCity} />;
+      })
+      }
+      </ul>
     </div>
   );
 };

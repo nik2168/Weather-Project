@@ -10,26 +10,26 @@ const WindWidget = ({curData}) => {
   return (
     <Box className="windWidgetBox">
       <div className="windWidgetHeader">
-        <Air sx={{ color: "#555" }} />
-        <Typography  sx={{ fontWeight: "600", fontSize: "1rem" }}>
+        <Air sx={{ color: "whitesmoke", fontSize: "2.3rem", color: "skyblue" }} />
+        <Typography  sx={{ fontWeight: "600", fontSize: "1.3rem" }}>
           Wind
         </Typography>
       </div>
       <Typography
         variant="h4"
-        sx={{ fontWeight: "600", paddingBottom: "2.9rem", textAlign: "center" }}
+        sx={{ fontWeight: "300", paddingBottom: "2rem", textAlign: "center" }}
       >
         {Math.trunc(curData?.wind?.speed)} KM/H
       </Typography>
       <div className="windWidgetHeader">
-        <Directions sx={{ color: "#555" }} />
-        <Typography sx={{ fontWeight: "600", fontSize: "0.9rem" }}>
+        <Directions sx={{ color: "whitesmoke" }} />
+        <Typography sx={{ fontWeight: "300", fontSize: "1rem" }}>
           Degree : {curData?.wind?.deg}°
         </Typography>
       </div>
       <div className="windWidgetHeader">
-        <WaterDrop sx={{ color: "#555" }} />
-        <Typography sx={{ fontWeight: "600", fontSize: "0.9rem" }}>
+        <WaterDrop sx={{ color: "whitesmoke" }} />
+        <Typography sx={{ fontWeight: "300", fontSize: "1rem" }}>
           Precipitation : {curData?.main?.humidity}
         </Typography>
       </div>

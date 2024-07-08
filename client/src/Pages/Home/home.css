@@ -37,7 +37,7 @@
   padding-bottom: 0.5rem;
 }
 
-button {
+.buttonDiv button {
   width: 4rem;
   height: 2rem;
   display: flex;
@@ -95,10 +95,29 @@ button:hover{
 }
 
 .homeCitiesBox {
-  width: 100%;
-  height: calc(100% - 8rem);
+  /* width: 100%;
   display: flex;
-  overflow-y: scroll;
+  overflow: auto;
   flex-direction: column;
+  gap: 0.5rem; */
+      width: 100%;
+  height: calc(100% - 8rem);
+  padding-top: calc(30% - 30% - 0rem);
+  padding-bottom: 30%;
   gap: 0.5rem;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+
+@media (max-width: 790px) {
+   
+.home {
+  height: 100vh;
+  width: 100vw;
+  padding: 1rem;
+  backdrop-filter: blur(20px);
+  
+}
+
 }

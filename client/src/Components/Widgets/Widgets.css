@@ -22,6 +22,18 @@
   gap: 1rem;
 }
 
+.weeklyForecastChartContainer {
+  min-width: none;
+  width: 100%;
+  max-width: 43rem;
+  height: fit-content;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
 .weeklyForecastContainer {
   min-width: none;
   width: 100%;

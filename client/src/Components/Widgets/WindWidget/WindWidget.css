@@ -8,7 +8,7 @@
   /* background-image: url("../../../assets/images/coldWeather.webp"); */
   background-size: cover;
   background-color: rgba(34, 29, 29, 0.4);
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(8px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
   overflow: hidden;
   display: flex;

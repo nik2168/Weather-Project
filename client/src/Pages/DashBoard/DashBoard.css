@@ -48,5 +48,7 @@ button:hover {
     width: 100vw;
     position: absolute;
     z-index: 60;
+      background-color: var(--bg);
+
   }
 }

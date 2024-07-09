@@ -9,7 +9,7 @@
   background-size: cover; */
   background-color: rgba(34, 29, 29, 0.4);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(8px);
   overflow: hidden;
   display: flex;
   text-shadow: 1px 1px 1px #333;

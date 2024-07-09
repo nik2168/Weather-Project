@@ -15,7 +15,7 @@ const Widgets = ({curData}) => {
         <WindWidget curData={curData} />
         <PressureWidget curData={curData} />
       </div>
-      <div className="weeklyForecastContainer">
+      <div className="weeklyForecastChartContainer">
         <WeeklyForecastChart />
       </div>
       <div className="weeklyForecastContainer">

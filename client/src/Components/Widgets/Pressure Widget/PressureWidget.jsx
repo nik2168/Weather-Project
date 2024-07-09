@@ -1,14 +1,16 @@
-import React from "react";
-import "./PressureWidget.css";
+import { Visibility } from "@mui/icons-material";
 import { Box, Typography } from "@mui/material";
+import React from "react";
 import { changeTimeFormat } from "../../../Features/helper";
+import "./PressureWidget.css";
+
 
 const PressureWidget = ({ curData }) => {
   let sunriseUnix = new Date(curData?.sys?.sunrise * 1000);
   let sunsetUnix = new Date(curData?.sys?.sunset * 1000);
   let sunriseTime = changeTimeFormat(sunriseUnix);
   let sunsetTime = changeTimeFormat(sunsetUnix);
-
+console.log(curData)
   return (
     <Box className="pressureWidget">
       <div className="pressureFirstHalf">
@@ -38,6 +40,12 @@ const PressureWidget = ({ curData }) => {
           </svg>{" "}
           <Typography sx={{ fontWeight: "300", fontSize: "1rem" }}>
             {sunsetTime}
+          </Typography>
+        </div>
+        <div className="windWidgetHeader">
+          <Visibility />
+          <Typography sx={{ fontWeight: "300", fontSize: "1rem" }}>
+            {(curData?.visibility)/1000}KM
           </Typography>
         </div>
       </div>

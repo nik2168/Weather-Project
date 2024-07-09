@@ -17,7 +17,7 @@ const WindWidget = ({curData}) => {
       </div>
       <Typography
         variant="h4"
-        sx={{ fontWeight: "300", paddingBottom: "2rem", textAlign: "center" }}
+        sx={{ fontWeight: "600", paddingBottom: "2rem", textAlign: "center" }}
       >
         {Math.trunc(curData?.wind?.speed)} KM/H
       </Typography>

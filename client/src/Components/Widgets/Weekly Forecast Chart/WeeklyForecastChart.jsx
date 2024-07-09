@@ -3,12 +3,14 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
-import "./WeeklyForecast.css";
+import "./WeeklyForecastChart.css";
 import { useWeeklyForecastQuery } from "../../../redux/api/api";
 import { useErrors } from "../../../Features/hooks";
-import { renderDailyData } from "../../../Features/renderWeeklyData";
+import { renderDailyData, renderDailyTemp } from "../../../Features/renderWeeklyData";
+import { LineChart } from "../../Chart/Charts";
 
-const WeeklyForecast = () => {
+
+const WeeklyForecastChart = () => {
   const { city } = useParams();
 
   // const baseUrl = "api.openweathermap.org/data/2.5/forecast";
@@ -24,6 +26,8 @@ const WeeklyForecast = () => {
 
   let DataElements = [];
 
+  let dailyTemp = [];
+
   if (!isLoading) {
     list = data?.list;
     list?.map((item) => {
@@ -33,16 +37,18 @@ const WeeklyForecast = () => {
       dailyData[day] = { ...item, day, time };
     });
     DataElements = renderDailyData(dailyData); // will render all the weekly data in react components ...
+    dailyTemp = renderDailyTemp(dailyData);
   }
 
+
   return isLoading ? (
-    <Skeleton className="weeklyForecastBox" />
+    <Skeleton className="weeklyForecastChartBox" />
   ) : (
-    <Box className="weeklyForecastBox">
-      <div className="weeklyForecastHeader">
+    <Box className="weeklyForecastChartBox">
+      <div className="weeklyForecastChartHeader">
         <span></span>
         <Typography sx={{ fontWeight: "100", fontSize: "0.8rem" }}>
-          Weekly Forecast
+          Weekly Forecast Temperature Chart
         </Typography>
       </div>
       <Divider
@@ -51,16 +57,11 @@ const WeeklyForecast = () => {
         flexItem
         sx={{ backgroundColor: "grey", height: "0.1px" }}
       />
-
-      <Stack
-        direction={{ xs: "column", sm: "column", md: "row" }}
-        spacing={{ xs: 2 }}
-        className="weeklyForecastStack"
-      >
-        {DataElements.map((ele) => ele)}
-      </Stack>
+      <div className="lineChatContainer">
+      <LineChart value={dailyTemp} />
+      </div>
     </Box>
   );
 };
 
-export default WeeklyForecast;
+export default WeeklyForecastChart;

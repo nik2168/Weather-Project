@@ -5,6 +5,7 @@ import { Cloud } from "@mui/icons-material";
 import WeeklyForecast from "./Weekly Forecast/WeeklyForecast";
 import WindWidget from "./WindWidget/WindWidget";
 import PressureWidget from "./Pressure Widget/PressureWidget";
+import WeeklyForecastChart from "./Weekly Forecast Chart/WeeklyForecastChart";
 
 const Widgets = ({curData}) => {
 
@@ -13,6 +14,9 @@ const Widgets = ({curData}) => {
       <div className="miniWidgets">
         <WindWidget curData={curData} />
         <PressureWidget curData={curData} />
+      </div>
+      <div className="weeklyForecastContainer">
+        <WeeklyForecastChart />
       </div>
       <div className="weeklyForecastContainer">
         <WeeklyForecast />

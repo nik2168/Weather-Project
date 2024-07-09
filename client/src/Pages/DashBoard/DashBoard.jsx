@@ -75,7 +75,7 @@ const DashBoard = () => {
             {buttonType}
           </button>
         </Box>
-        <Container sx={{ height: "40%", width: "100%", paddingTop: "3rem" }}>
+        <Container sx={{ height: "38rem", width: "100%", paddingTop: "3rem" }}>
           <Stack
             width={"100%"}
             sx={{

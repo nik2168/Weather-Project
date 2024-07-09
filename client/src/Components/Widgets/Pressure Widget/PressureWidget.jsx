@@ -10,7 +10,6 @@ const PressureWidget = ({ curData }) => {
   let sunsetUnix = new Date(curData?.sys?.sunset * 1000);
   let sunriseTime = changeTimeFormat(sunriseUnix);
   let sunsetTime = changeTimeFormat(sunsetUnix);
-console.log(curData)
   return (
     <Box className="pressureWidget">
       <div className="pressureFirstHalf">

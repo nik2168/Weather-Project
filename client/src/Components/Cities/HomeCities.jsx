@@ -1,48 +1,34 @@
-import {
-  Skeleton,
-  Typography
-} from "@mui/material";
-import React from 'react';
-import './HomeCities.css';
+import { Skeleton, Typography } from "@mui/material";
+import React from "react";
+import "./HomeCities.css";
 import { Link } from "react-router-dom";
 import { useCurWeatherQuery } from "../../redux/api/api";
 import { useErrors } from "../../Features/hooks";
 import { changeTimeFormat } from "../../Features/helper";
-import clouds from '../../assets/Videos/clouds.mp4'
-import clouds2 from '../../assets/Videos/clouds2.mp4'
-import snowfall from '../../assets/Videos/snowfall.mp4'
-import mountain from '../../assets/Videos/mountain.mp4'
-import nightlight from '../../assets/Videos/nightlight.mp4'
-import sea from '../../assets/Videos/sea.mp4'
-import northenlights from "../../assets/Videos/northenlights.mp4";
+import { weatherVideoSelector } from "../../Features/weatherVideoGen";
 
-const HomeCities = ({curCity, idx}) => {
+const HomeCities = ({ curCity, idx }) => {
+  useCurWeatherQuery();
 
-  useCurWeatherQuery()
-
-
-  const { isLoading, isError, error, data, refetch } = useCurWeatherQuery(curCity);
+  const { isLoading, isError, error, data, refetch } =
+    useCurWeatherQuery(curCity);
 
   useErrors([{ isError, error }]);
 
-let curTime = ''
+  let curTime = "";
 
- if(!isLoading){
-  const date = new Date(data?.dt * 1000);
-   curTime = changeTimeFormat(date)
- }
+  if (!isLoading) {
+    const date = new Date(data?.dt * 1000);
+    curTime = changeTimeFormat(date);
+  }
 
-   let curWeather = data?.weather;
-   let weather = "";
-   if (curWeather) {
-     weather = curWeather[0]?.main;
-   }
-
-   const videos = [clouds2, snowfall, mountain, nightlight, sea, northenlights]
-
-   const randomNumber = Math.random() * (5 - 0) + 0;
-   const randomVideo = videos[Math.trunc(randomNumber)]
-
+  let curWeather = data?.weather;
+  let weather = "";
+  let curWeatherVideo;
+  if (curWeather) {
+    weather = curWeather[0]?.main;
+    curWeatherVideo = weatherVideoSelector(weather);
+  }
 
   return isLoading ? (
     <Skeleton className="homeCityDiv" />
@@ -50,7 +36,7 @@ let curTime = ''
     <>
       <Link to={`/dashboard/${curCity}`} className="homeCityDiv">
         <video className="videoTag" autoPlay loop muted>
-          <source src={randomVideo} type="video/mp4" />
+          <source src={curWeatherVideo} type="video/mp4" />
         </video>
         <div className="firsthalfContainer">
           <div className="locationContainer">
@@ -90,4 +76,4 @@ let curTime = ''
   );
 };
 
-export default HomeCities
+export default HomeCities;

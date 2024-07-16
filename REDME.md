@@ -15,7 +15,6 @@
 -> User can search for any city on search bar, press enter for a search
 -> User can add a city to his personal watchlist which will be stored or can be updated in future in database.
 
-My Gmail - nikhilyadavhry@gmail.com
 
 I made this web app totally by myself, not a sigle use of Ai toold, or even any similar youtube tutorial, I can assure that. ...
 
